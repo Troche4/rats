@@ -7,7 +7,11 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
-    justifyContent: "center"
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "8px",
+    paddingTop: "16px"
   }
 }));
 

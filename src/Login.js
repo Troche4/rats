@@ -10,13 +10,15 @@ export default function Login({firebaseApp, user, setUser}) {
     const logInWithGoogle = () => {
         const googleAuthProvider= new GoogleAuthProvider();
         signInWithPopup(getAuth(firebaseApp), googleAuthProvider).then((result) => {
-            console.log(result.user)
             setUser(result.user);
         });
     }
 
     return <React.Fragment>
         <Typography variant="h4">Login</Typography>
-        <Button onClick={() => logInWithGoogle()}>Log in with Google</Button>    
+        <Button
+            variant="contained"
+            onClick={() => logInWithGoogle()}>Log in with Google
+        </Button>    
     </React.Fragment>
 }

@@ -1,23 +1,36 @@
 import React from "react";
-import {
-  Route,
-  Switch,  
-  BrowserRouter
-} from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import { initializeApp } from "firebase/app";
+import { makeStyles } from "@mui/styles";
 
-function App() {
-  return <BrowserRouter>
-    <Switch>
-      <Route exact path="/dashboard">
-        <Dashboard />
-      </Route>
-      <Route>
-        <Login />
-      </Route>
-    </Switch>
-  </BrowserRouter>
-}
+const useStyles = makeStyles(() => ({
+  root: {
+    display: "flex",
+    justifyContent: "center"
+  }
+}));
 
-export default App;
+export default function App(){
+  const [user, setUser] = React.useState();
+  const classesBase = useStyles();
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAsGgu2Z7NKopGcQohlZoRgoHf_cSCMKIo",
+    authDomain: "rats-5ca71.firebaseapp.com",
+    projectId: "rats-5ca71",
+    storageBucket: "rats-5ca71.appspot.com",
+    messagingSenderId: "206325077480",
+    appId: "1:206325077480:web:81e882772360bf333e405d",
+    measurementId: "G-0M4TQH1KWE"
+  };
+  const app = initializeApp(firebaseConfig);
+
+  return <div className={classesBase.root}>
+    {user ? 
+      <Dashboard firebaseApp={app} user={user} setUser={setUser}/>
+      :
+      <Login firebaseApp={app} user={user} setUser={setUser}/>
+    }
+  </div> 
+};

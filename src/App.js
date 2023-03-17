@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
 
 export default function App(){
   const [user, setUser] = React.useState();
+  const [oauthToken, setOauthToken] = React.useState();
   const classesBase = useStyles();
 
   const firebaseConfig = {
@@ -32,9 +33,9 @@ export default function App(){
 
   return <div className={classesBase.root}>
     {user ? 
-      <Dashboard firebaseApp={app} user={user} setUser={setUser}/>
+      <Dashboard firebaseApp={app} user={user} setUser={setUser} oauthAccessToken={oauthToken} />
       :
-      <Login firebaseApp={app} user={user} setUser={setUser}/>
+      <Login firebaseApp={app} setOauthToken={setOauthToken} setUser={setUser}/>
     }
   </div> 
 };

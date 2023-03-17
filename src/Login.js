@@ -6,10 +6,12 @@ import {
     getAuth
 } from "firebase/auth";
 
-export default function Login({firebaseApp, user, setUser}) {
+export default function Login({firebaseApp, setOauthToken, setUser}) {
     const logInWithGoogle = () => {
         const googleAuthProvider= new GoogleAuthProvider();
+        googleAuthProvider.addScope('https://www.googleapis.com/auth/spreadsheets');
         signInWithPopup(getAuth(firebaseApp), googleAuthProvider).then((result) => {
+            setOauthToken(result._tokenResponse.oauthAccessToken)
             setUser(result.user);
         });
     }

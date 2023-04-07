@@ -32,7 +32,7 @@ export default function App(){
   const app = initializeApp(firebaseConfig);
 
   return <div className={classesBase.root}>
-    {user ? 
+    {user?.email ? 
       <Dashboard firebaseApp={app} user={user} setUser={setUser} oauthAccessToken={oauthToken} />
       :
       <Login firebaseApp={app} setOauthToken={setOauthToken} setUser={setUser}/>

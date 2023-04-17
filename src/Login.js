@@ -19,6 +19,7 @@ export default function Login({firebaseApp, setOauthToken, setUser}) {
     return <React.Fragment>
         <Typography variant="h4">Login</Typography>
         <Button
+            color="primary"
             variant="contained"
             onClick={() => logInWithGoogle()}>Log in with Google
         </Button>    

@@ -2,16 +2,15 @@ import React from "react";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import { initializeApp } from "firebase/app";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    gap: "8px",
-    paddingTop: "16px"
+    padding: theme.spacing(2, 8)
   }
 }));
 

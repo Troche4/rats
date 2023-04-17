@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography } from "@material-ui/core";
 import {
     GoogleAuthProvider,
     signInWithPopup,

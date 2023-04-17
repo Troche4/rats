@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@material-ui/core";
+import TableView from "./TableView";
 import {
     signOut,
     getAuth
@@ -25,7 +26,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
         if (id?.length > 0) {
             setSheetId(id);
             setHasLinkedSheet(true);
-            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}`, {
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/Sheet1?alt=json`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${oauthAccessToken}`
@@ -44,22 +45,15 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
     return <React.Fragment>
         <Typography variant="h3">Dashboard</Typography>
         <div>Welcome, {user.displayName} ({user.email})</div>
-        {hasLinkedSheet && sheetId && sheetData ? 
-            <React.Fragment>
-                <div>Found a sheet: {sheetData.properties.title}</div>
-            </React.Fragment>
-            :
-            <React.Fragment>
-                <div>There is no timesheet associated with your user account.</div> 
-                <TextField 
-                    helperText="Copy and paste your google sheet link here:"
-                    onChange={(evt) => {
-                        updateSheetId(evt.target.value)
-                    }}
-                />
-            </React.Fragment>
-            
-        }
+        {sheetData && <TableView sheetData={sheetData.values} />}
+        <div>Update the timesheet associated with your account:</div> 
+        <TextField 
+            helperText="Copy and paste your google sheet link here:"
+            placeholder="https://docs.google.com/spreadsheets/d/1JQ7xawhD7H27WasdfGxoEbSU-Y7osN3-F7hw/edit#gid=0"
+            onChange={(evt) => {
+                updateSheetId(evt.target.value)
+            }}
+        />
         <Button 
             variant="contained"
             onClick={() => {

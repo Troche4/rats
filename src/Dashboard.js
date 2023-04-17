@@ -1,25 +1,15 @@
 import * as React from "react";
-import { Button, TextField, Typography, CircularProgress } from "@material-ui/core";
+import { Button, TextField, CircularProgress } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import Header from "./Header";
 import TableView from "./TableView";
-import {
-    signOut,
-    getAuth
-} from "firebase/auth";
 
 const useStyles = makeStyles((theme) => ({
-    header: {
-        width: "100%",
+    linkSheetForm: {
         display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        margin: theme.spacing(0, 3, 3, 3)
-    },
-    account: {
-        display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-evenly",
+        padding: theme.spacing(3),
         gap: theme.spacing(2)
     }
   }));
@@ -59,39 +49,33 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
     }, []);
 
     return <React.Fragment>
-        <div className={classesBase.header}>
-            <Typography variant="h3">Dashboard</Typography>
-            <div className={classesBase.account}>
-                <div>{user.displayName} ({user.email})</div>
-                <Button 
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        signOut(getAuth(firebaseApp))
-                        setUser(null);
-                    }}>
-                        Logout
-                </Button>
-            </div>
-        </div>
+        <Header 
+            user={user} 
+            firebaseApp={firebaseApp} 
+            setUser={setUser} 
+        />
         
         {sheetData ? <TableView sheetData={sheetData.values} /> : <CircularProgress color="primary" />}
-        <div>Update the timesheet associated with your account:</div> 
-        <TextField 
-            variant="outlined"
-            helperText="Copy and paste your google sheet link here above."
-            placeholder="https://docs.google.com/spreadsheets/d/1JQ7xawhD7H27WasdfGxoEbSU-Y7osN3-F7hw/edit#gid=0"
-            onChange={(evt) => {
-                setSheetLink(evt.target.value)
-            }}
-        />
-        <Button 
-            variant="contained"
-            color="primary"
-            onClick={() => updateSheetId()}
-        >
+
+        <div className={classesBase.linkSheetForm}>
+            <div>Update the timesheet associated with your account:</div> 
+            <TextField 
+                variant="outlined"
+                helperText="Copy and paste your google sheet link here above."
+                placeholder="https://docs.google.com/spreadsheets/d/1JQ7xawhD7H27WasdfGxoEbSU-Y7osN3-F7hw/edit#gid=0"
+                onChange={(evt) => {
+                    setSheetLink(evt.target.value)
+                }}
+            />
+            <Button
+                variant="contained"
+                color="default"
+                onClick={() => updateSheetId()}
+            >
                 Import
             </Button>
+        </div>
+        
         
     </React.Fragment>
 }

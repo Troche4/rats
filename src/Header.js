@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Header({user, firebaseApp, setUser}) {
     const classesBase = useStyles();
     return <div className={classesBase.header}>
-        <Typography variant="h3">Dashboard</Typography>
+        <Typography variant="h4">Dashboard</Typography>
         <div className={classesBase.account}>
             <div>{user.displayName} ({user.email})</div>
             <Button 
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 onClick={() => {
                     signOut(getAuth(firebaseApp))

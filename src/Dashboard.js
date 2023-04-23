@@ -45,6 +45,26 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
         fetchSheetData();
     }
 
+    const handleUpdate = (task, date, startTime, endTime, duration, description, index) => {
+            let newRow = [[task, date, startTime, endTime, duration, description]];
+            let range = `Sheet1!${index+1}:${index+1}`
+            let id = localStorage.getItem(`${user.email}-sheetId`);
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${range}?valueInputOption=RAW`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${oauthAccessToken}`
+                },
+                body: JSON.stringify({
+                    range: range,
+                    values: newRow
+                })
+            })
+            .then(() => {
+                fetchSheetData();
+                setAddHoursFormOpen(false);
+            })
+    }
+
     React.useEffect(() => {
         fetchSheetData();
     }, []);
@@ -56,7 +76,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             setUser={setUser} 
         />
         
-        {sheetData?.values?.length > 0 ? <TableView sheetData={sheetData.values} /> : <CircularProgress color="primary" />}
+        {sheetData?.values?.length > 0 ? <TableView sheetData={sheetData.values} handleUpdate={handleUpdate}/> : <CircularProgress color="primary" />}
 
         <Button
             variant="contained"
@@ -70,8 +90,9 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             <div>Update the timesheet associated with your account:</div> 
             <TextField 
                 variant="outlined"
+                fullWidth
                 helperText="Copy and paste your google sheet link here above."
-                placeholder="https://docs.google.com/spreadsheets/d/1JQ7xawhD7H27WasdfGxoEbSU-Y7osN3-F7hw/edit#gid=0"
+                placeholder="Example: https://docs.google.com/spreadsheets/d/1JQ7xawhD7H27WasdfGxoEbSU-Y7osN3-F7hw/edit#gid=0"
                 onChange={(evt) => {
                     setSheetLink(evt.target.value)
                 }}
@@ -90,26 +111,10 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             onClose={() => setAddHoursFormOpen(false)}
         >
             <AddHoursForm 
+                title="Add Hours"
                 handleClose={() => setAddHoursFormOpen(false)}
                 onSubmit={(task, date, startTime, endTime, duration, description) => {
-                    let newRow = [[task, date, startTime, endTime, duration, description]];
-                    let newRowIndex = sheetData.values.length + 1;
-                    let range = `Sheet1!${newRowIndex}:${newRowIndex}`
-                    let id = localStorage.getItem(`${user.email}-sheetId`);
-                    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${range}?valueInputOption=RAW`, {
-                        method: "PUT",
-                        headers: {
-                            Authorization: `Bearer ${oauthAccessToken}`
-                        },
-                        body: JSON.stringify({
-                            range: range,
-                            values: newRow
-                        })
-                    })
-                    .then(() => {
-                        fetchSheetData();
-                        setAddHoursFormOpen(false);
-                    })
+                    handleUpdate(task, date, startTime, endTime, duration, description, sheetData.values.length);
                 }}
             />
         </Dialog>    

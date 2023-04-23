@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-export default function AddHoursForm({onSubmit, handleClose}){
+export default function AddHoursForm({title, onSubmit, handleClose}){
     const classesBase = useStyles();
 
     const [task, setTask] = React.useState("");
@@ -34,7 +34,7 @@ export default function AddHoursForm({onSubmit, handleClose}){
     const [description, setDescription] = React.useState("");
 
     return <Paper className={classesBase.formContainer}>
-        <Typography className={classesBase.title} variant="h5">Add Hours</Typography>
+        <Typography className={classesBase.title} variant="h5">{title}</Typography>
         <TextField
             variant="outlined"
             margin="dense"

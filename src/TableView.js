@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TableView({sheetData}){
     const classesBase = useStyles();
-    let rows = sheetData.slice(Math.max(sheetData.length - 20, 1));
+    let rows = sheetData?.slice(Math.max(sheetData.length - 20, 1));
     const truncated = rows.length + 1 < sheetData.length;
 
     return <React.Fragment>

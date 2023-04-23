@@ -21,10 +21,6 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
     const [sheetLink, setSheetLink] = React.useState(null);
     const [addHoursFormOpen, setAddHoursFormOpen] = React.useState(false);
 
-    React.useEffect(() =>{
-        console.log(sheetData)
-    }, [sheetData])
-
     const fetchSheetData= () => {
         let id = localStorage.getItem(`${user.email}-sheetId`);
         if (id?.length > 0) {
@@ -60,7 +56,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             setUser={setUser} 
         />
         
-        {sheetData ? <TableView sheetData={sheetData.values} /> : <CircularProgress color="primary" />}
+        {sheetData?.values?.length > 0 ? <TableView sheetData={sheetData.values} /> : <CircularProgress color="primary" />}
 
         <Button
             variant="contained"
@@ -95,15 +91,26 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
         >
             <AddHoursForm 
                 onSubmit={(task, date, startTime, endTime, description) => {
-                    console.log(task)
-                    console.log(date)
-                    console.log(startTime)
-                    console.log(endTime)
-                    console.log(description)
+                    let newRow = [[task, date, startTime, endTime, description]];
+                    let newRowIndex = sheetData.values.length + 1;
+                    let range = `Sheet1!${newRowIndex}:${newRowIndex}`
+                    let id = localStorage.getItem(`${user.email}-sheetId`);
+                    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${range}?valueInputOption=RAW`, {
+                        method: "PUT",
+                        headers: {
+                            Authorization: `Bearer ${oauthAccessToken}`
+                        },
+                        body: JSON.stringify({
+                            range: range,
+                            values: newRow
+                        })
+                    })
+                    .then(() => {
+                        fetchSheetData();
+                        setAddHoursFormOpen(false);
+                    })
                 }}
             />
-        </Dialog>
-        
-        
+        </Dialog>    
     </React.Fragment>
 }

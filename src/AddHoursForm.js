@@ -13,19 +13,24 @@ const useStyles = makeStyles((theme) => ({
     title: {
         marginBottom: theme.spacing(1)
     },
-    submitButton:{ 
-        marginTop: theme.spacing(1)
+    footer:{ 
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        marginTop: theme.spacing(1),
     }
   }));
 
 
-export default function AddHoursForm({onSubmit}){
+export default function AddHoursForm({onSubmit, handleClose}){
     const classesBase = useStyles();
 
     const [task, setTask] = React.useState("");
     const [date, setDate] = React.useState(new Date().toLocaleDateString("en-US"));
     const [startTime, setStartTime] = React.useState("");
     const [endTime, setEndTime] = React.useState("");
+    const [duration, setDuration] = React.useState("");
     const [description, setDescription] = React.useState("");
 
     return <Paper className={classesBase.formContainer}>
@@ -61,18 +66,35 @@ export default function AddHoursForm({onSubmit}){
         <TextField
             variant="outlined"
             margin="dense"
+            helperText={"Duration"}
+            value={duration}
+            onChange={(evt) => setDuration(evt.target.value)}
+        />
+        <TextField
+            variant="outlined"
+            margin="dense"
             helperText={"Description"}
             multiline
             value={description}
             onChange={(evt) => setDescription(evt.target.value)}
         />
-        <Button
-            className={classesBase.submitButton}
-            variant="contained"
-            color="primary"
-            onClick={() => onSubmit(task, date, startTime, endTime, description)}
-        >
-            Submit
-        </Button>
+        <div className={classesBase.footer}>
+            <Button
+                className={classesBase.submitButton}
+                variant="contained"
+                onClick={() => handleClose()}
+            >
+                Cancel
+            </Button>
+            <Button
+                className={classesBase.submitButton}
+                variant="contained"
+                color="primary"
+                onClick={() => onSubmit(task, date, startTime, endTime, duration, description)}
+            >
+                Submit
+            </Button>
+        </div>
+        
     </Paper>
 }

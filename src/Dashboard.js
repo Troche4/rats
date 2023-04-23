@@ -90,8 +90,9 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             onClose={() => setAddHoursFormOpen(false)}
         >
             <AddHoursForm 
-                onSubmit={(task, date, startTime, endTime, description) => {
-                    let newRow = [[task, date, startTime, endTime, description]];
+                handleClose={() => setAddHoursFormOpen(false)}
+                onSubmit={(task, date, startTime, endTime, duration, description) => {
+                    let newRow = [[task, date, startTime, endTime, duration, description]];
                     let newRowIndex = sheetData.values.length + 1;
                     let range = `Sheet1!${newRowIndex}:${newRowIndex}`
                     let id = localStorage.getItem(`${user.email}-sheetId`);

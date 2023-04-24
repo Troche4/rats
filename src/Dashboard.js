@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         padding: theme.spacing(3),
         gap: theme.spacing(2)
+    },
+    actionButtons: {
+        display: "flex",
+        gap: theme.spacing(2)
     }
   }));
 
@@ -65,6 +69,10 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             })
     }
 
+    const submitSheet = () => {
+        
+    }
+
     React.useEffect(() => {
         fetchSheetData();
     }, []);
@@ -78,20 +86,29 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
         
         {sheetData?.values?.length > 0 ? <TableView sheetData={sheetData.values} handleUpdate={handleUpdate}/> : <CircularProgress color="primary" />}
 
-        <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setAddHoursFormOpen(true)}
-        >
-            Add Hours
-        </Button>
+        <div className={classesBase.actionButtons}>
+            <Button
+                variant="contained"
+                color="default"
+                onClick={() => setAddHoursFormOpen(true)}
+            >
+                Add Hours
+            </Button>
+            <Button 
+                variant="contained"
+                color="primary"
+                onClick={() => submitSheet()}
+            >
+                Submit
+            </Button>
+        </div>
 
         <div className={classesBase.linkSheetForm}>
             <div>Update the timesheet associated with your account:</div> 
             <TextField 
                 variant="outlined"
                 fullWidth
-                helperText="Copy and paste your google sheet link here above."
+                helperText="Copy and paste your google sheet link here above. The first row should have the following column names in it, starting from the top left: Task, Date, Start Time, End Time, Duration, Description."
                 placeholder="Example: https://docs.google.com/spreadsheets/d/1JQ7xawhD7H27WasdfGxoEbSU-Y7osN3-F7hw/edit#gid=0"
                 onChange={(evt) => {
                     setSheetLink(evt.target.value)

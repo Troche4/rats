@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, TextField, CircularProgress, Dialog, Paper } from "@material-ui/core";
+import { Button, TextField, CircularProgress, Dialog } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import Header from "./Header";
 import TableView from "./TableView";
@@ -89,7 +89,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
         <div className={classesBase.actionButtons}>
             <Button
                 variant="contained"
-                color="default"
+                color="secondary"
                 onClick={() => setAddHoursFormOpen(true)}
             >
                 Add Hours

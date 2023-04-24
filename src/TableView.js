@@ -10,7 +10,9 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2, 0)
     },
     headerCell: {
-        backgroundColor: "#B3B3B3",
+        backgroundColor: theme.palette.secondary.main,
+        color: "white",
+        fontWeight: 700
     },
     editAndDelete: {
         padding: theme.spacing(1)

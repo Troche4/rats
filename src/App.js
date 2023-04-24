@@ -2,7 +2,7 @@ import React from "react";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import { initializeApp } from "firebase/app";
-import { makeStyles } from "@material-ui/core/styles";
+import { MuiThemeProvider, createTheme, makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +19,20 @@ export default function App(){
   const [oauthToken, setOauthToken] = React.useState();
   const classesBase = useStyles();
 
+  const theme = createTheme({
+    typography: {
+      fontFamily: '"Libre Franklin",sans-serif'
+    },
+    palette: {
+      primary: {
+        main: "rgb(238, 150, 109)"
+      },
+      secondary: {
+        main: "rgb(7, 26, 47)"
+      }
+    }
+  })
+
   const firebaseConfig = {
     apiKey: "AIzaSyAsGgu2Z7NKopGcQohlZoRgoHf_cSCMKIo",
     authDomain: "rats-5ca71.firebaseapp.com",
@@ -30,11 +44,13 @@ export default function App(){
   };
   const app = initializeApp(firebaseConfig);
 
-  return <div className={classesBase.root}>
-    {user?.email ? 
-      <Dashboard firebaseApp={app} user={user} setUser={setUser} oauthAccessToken={oauthToken} />
-      :
-      <Login firebaseApp={app} setOauthToken={setOauthToken} setUser={setUser}/>
-    }
-  </div> 
+  return <MuiThemeProvider theme={theme}>
+    <div className={classesBase.root}>
+      {user?.email ? 
+        <Dashboard firebaseApp={app} user={user} setUser={setUser} oauthAccessToken={oauthToken} />
+        :
+        <Login firebaseApp={app} setOauthToken={setOauthToken} setUser={setUser}/>
+      }
+    </div> 
+    </MuiThemeProvider>
 };

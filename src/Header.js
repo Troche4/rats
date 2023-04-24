@@ -28,7 +28,7 @@ export default function Header({user, firebaseApp, setUser}) {
             <div>{user.displayName} ({user.email})</div>
             <Button 
                 variant="outlined"
-                color="primary"
+                color="secondary"
                 onClick={() => {
                     signOut(getAuth(firebaseApp))
                     setUser(null);

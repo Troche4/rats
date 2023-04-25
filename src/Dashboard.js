@@ -98,7 +98,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
                     color="primary"
                     onClick={() => submitSheet()}
                 >
-                    Submit
+                    Submit For Approval
                 </Button>
             </div>
         </React.Fragment>

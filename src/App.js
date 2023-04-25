@@ -4,6 +4,7 @@ import Login from "./Login";
 import { initializeApp } from "firebase/app";
 import { MuiThemeProvider, createTheme, makeStyles } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     padding: theme.spacing(2, 8)
+  },
+  backdrop: {
+    height: "100vh",
+    backgroundColor: "gray"
   }
 }));
 
@@ -58,7 +63,7 @@ export default function App(){
 
   return <MuiThemeProvider theme={theme}>
     <CssBaseline>
-      <div className={classesBase.root}>
+      <div className={clsx(classesBase.root, !user && classesBase.backdrop)}>
         {user?.email ? 
           <Dashboard firebaseApp={app} user={user} setUser={setUser} oauthAccessToken={oauthToken} />
           :

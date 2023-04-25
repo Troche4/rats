@@ -76,7 +76,6 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
     React.useEffect(() => {
         fetchSheetData();
     }, []);
-
     return <React.Fragment>
         <Header 
             user={user} 
@@ -84,24 +83,28 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             setUser={setUser} 
         />
         
-        {sheetData?.values?.length > 0 ? <TableView sheetData={sheetData.values} handleUpdate={handleUpdate}/> : <CircularProgress color="primary" />}
-
-        <div className={classesBase.actionButtons}>
-            <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => setAddHoursFormOpen(true)}
-            >
-                Add Hours
-            </Button>
-            <Button 
-                variant="contained"
-                color="primary"
-                onClick={() => submitSheet()}
-            >
-                Submit
-            </Button>
-        </div>
+        {sheetData?.values ? <React.Fragment>
+            <TableView sheetData={sheetData.values} handleUpdate={handleUpdate}/>
+            <div className={classesBase.actionButtons}>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => setAddHoursFormOpen(true)}
+                >
+                    Add Hours
+                </Button>
+                <Button 
+                    variant="contained"
+                    color="primary"
+                    onClick={() => submitSheet()}
+                >
+                    Submit
+                </Button>
+            </div>
+        </React.Fragment>
+        :
+            <CircularProgress color="secondary" />
+        }
 
         <div className={classesBase.linkSheetForm}>
             <div>Update the timesheet associated with your account:</div> 

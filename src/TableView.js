@@ -1,4 +1,4 @@
-import { Table, TableContainer, TableHead, TableRow, Button, TableCell, TableBody, Paper, FormHelperText, Dialog } from '@material-ui/core';
+import { Table, TableContainer, TableHead, TableRow, IconButton, TableCell, TableBody, Paper, FormHelperText, Dialog } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 700
     },
     editAndDelete: {
+        fontSize: "1.5em",
         padding: theme.spacing(1)
     }
   }));
@@ -42,12 +43,12 @@ export default function TableView({sheetData, handleUpdate}){
                             return <TableRow key={`row ${index}`}>
                                 {row?.map(cell => <TableCell key={`body ${index} ${cell}`} align="center">{cell}</TableCell>)}
                                 <TableCell>
-                                    <Button onClick={() => {
+                                    <IconButton onClick={() => {
                                         setEditingIndex(index + 1);
                                         setEditFormOpen(true);
                                     }}>
                                         <EditIcon className={classesBase.editAndDelete} />
-                                    </Button>
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         })}

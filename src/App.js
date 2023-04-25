@@ -3,6 +3,7 @@ import Dashboard from "./Dashboard";
 import Login from "./Login";
 import { initializeApp } from "firebase/app";
 import { MuiThemeProvider, createTheme, makeStyles } from "@material-ui/core/styles";
+import { CssBaseline } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +22,18 @@ export default function App(){
 
   const theme = createTheme({
     typography: {
-      fontFamily: '"Libre Franklin",sans-serif'
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(',')
     },
     palette: {
       primary: {
@@ -45,12 +57,14 @@ export default function App(){
   const app = initializeApp(firebaseConfig);
 
   return <MuiThemeProvider theme={theme}>
-    <div className={classesBase.root}>
-      {user?.email ? 
-        <Dashboard firebaseApp={app} user={user} setUser={setUser} oauthAccessToken={oauthToken} />
-        :
-        <Login firebaseApp={app} setOauthToken={setOauthToken} setUser={setUser}/>
-      }
-    </div> 
-    </MuiThemeProvider>
+    <CssBaseline>
+      <div className={classesBase.root}>
+        {user?.email ? 
+          <Dashboard firebaseApp={app} user={user} setUser={setUser} oauthAccessToken={oauthToken} />
+          :
+          <Login firebaseApp={app} setOauthToken={setOauthToken} setUser={setUser}/>
+        }
+      </div> 
+    </CssBaseline>
+  </MuiThemeProvider>
 };

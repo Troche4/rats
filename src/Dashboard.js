@@ -119,7 +119,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             />
             <Button
                 variant="outlined"
-                color="default"
+                color="inherit"
                 onClick={() => updateSheetId()}
             >
                 Import

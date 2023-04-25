@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Header({user, firebaseApp, setUser}) {
     const classesBase = useStyles();
     return <div className={classesBase.header}>
-        <Typography variant="h4">Dashboard</Typography>
+        <Typography variant={"h5"} color="secondary">Timesheet Manager</Typography>
+        <Typography variant={"h5"} color="secondary">Rhizome - Deeper Than Grassroots</Typography>
         <div className={classesBase.account}>
             <div>{user.displayName} ({user.email})</div>
             <Button 

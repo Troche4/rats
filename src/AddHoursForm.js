@@ -81,7 +81,7 @@ export default function AddHoursForm({title, onSubmit, handleClose}){
         <div className={classesBase.footer}>
             <Button
                 className={classesBase.submitButton}
-                variant="contained"
+                variant="outlined"
                 onClick={() => handleClose()}
             >
                 Cancel
@@ -92,7 +92,7 @@ export default function AddHoursForm({title, onSubmit, handleClose}){
                 color="primary"
                 onClick={() => onSubmit(task, date, startTime, endTime, duration, description)}
             >
-                Submit
+                Add
             </Button>
         </div>
         

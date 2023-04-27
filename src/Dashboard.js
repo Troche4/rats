@@ -173,7 +173,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             <TextField 
                 variant="outlined"
                 fullWidth
-                helperText="Copy and paste your google sheet link here above. The first row should have the following column names in it, starting from the top left: Task, Date, Start Time, End Time, Duration, Description."
+                helperText="Copy and paste your google sheet link here above. The sheet should be empty and have no content in it."
                 placeholder="Example: https://docs.google.com/spreadsheets/d/1JQ7xawhD7H27WasdfGxoEbSU-Y7osN3-F7hw/edit#gid=0"
                 onChange={(evt) => {
                     setSheetLink(evt.target.value)

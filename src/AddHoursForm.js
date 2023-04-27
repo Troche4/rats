@@ -66,9 +66,10 @@ export default function AddHoursForm({title, onSubmit, handleClose}){
         <TextField
             variant="outlined"
             margin="dense"
-            helperText={"Duration"}
+            type="number"
+            helperText={"Duration (must be in hours)"}
             value={duration}
-            onChange={(evt) => setDuration(evt.target.value)}
+            onChange={(evt) => setDuration(Math.round(parseInt(evt.target.value)))}
         />
         <TextField
             variant="outlined"

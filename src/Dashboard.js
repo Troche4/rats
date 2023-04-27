@@ -25,10 +25,10 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
     const [sheetLink, setSheetLink] = React.useState(null);
     const [addHoursFormOpen, setAddHoursFormOpen] = React.useState(false);
 
-    const fetchSheetData= () => {
+    const fetchSheetData = () => {
         let id = localStorage.getItem(`${user.email}-sheetId`);
         if (id?.length > 0) {
-            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/Sheet1?alt=json`, {
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${oauthAccessToken}`
@@ -36,9 +36,38 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             })
             .then((response) => response.json())
             .then((json) => {
-                setSheetData(json)
+                let name = json.sheets.slice(-1).pop().properties.title;
+                if (id?.length > 0 && name?.length > 0) {
+                    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${name}?alt=json`, {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${oauthAccessToken}`
+                        }
+                    })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        setSheetData(json);
+                        if (json !== null && !json.values) {
+                            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${name}!1:1?valueInputOption=RAW`, {
+                                method: "PUT",
+                                headers: {
+                                    Authorization: `Bearer ${oauthAccessToken}`
+                                },
+                                body: JSON.stringify({
+                                    range: `${name}!1:1`,
+                                    values: [["Task", "Date", "Start Time", "End Time", "Duration (hours)", "Description"]]
+                                })
+                            })
+                            .then(() => {
+                                fetchSheetData();
+                            })
+                        }
+                    })
+                }
+                localStorage.setItem(`${user.email}-sheetName`, name);
             })
         }
+        
     }
     
     const updateSheetId = () => {
@@ -51,31 +80,64 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
 
     const handleUpdate = (task, date, startTime, endTime, duration, description, index) => {
             let newRow = [[task, date, startTime, endTime, duration, description]];
-            let range = `Sheet1!${index+1}:${index+1}`
             let id = localStorage.getItem(`${user.email}-sheetId`);
-            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${range}?valueInputOption=RAW`, {
-                method: "PUT",
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}`, {
+                method: "GET",
                 headers: {
                     Authorization: `Bearer ${oauthAccessToken}`
-                },
-                body: JSON.stringify({
-                    range: range,
-                    values: newRow
-                })
+                }
             })
-            .then(() => {
-                fetchSheetData();
-                setAddHoursFormOpen(false);
+            .then((response) => response.json())
+            .then((json) => {
+                let name = json.sheets.slice(-1).pop().properties.title;
+                let range = `${name}!${index+1}:${index+1}`;
+                fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${range}?valueInputOption=RAW`, {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${oauthAccessToken}`
+                    },
+                    body: JSON.stringify({
+                        range: range,
+                        values: newRow
+                    })
+                })
+                .then(() => {
+                    fetchSheetData();
+                    setAddHoursFormOpen(false);
+                })
             })
     }
 
     const submitSheet = () => {
-        
+        let id = localStorage.getItem(`${user.email}-sheetId`);
+        fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}:batchUpdate`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${oauthAccessToken}`
+            },
+            body: JSON.stringify({
+                  "requests": [
+                    {
+                      "addSheet": {
+                        "properties": {
+                        }
+                    }
+                    }
+                  ],
+                  "responseIncludeGridData": true
+                })
+        })
+        .then((response) => response.json())
+        .then(() => {
+            setSheetData(null);
+            fetchSheetData();
+        })
     }
 
     React.useEffect(() => {
         fetchSheetData();
     }, []);
+
     return <React.Fragment>
         <Header 
             user={user} 
@@ -134,7 +196,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
                 title="Add Hours"
                 handleClose={() => setAddHoursFormOpen(false)}
                 onSubmit={(task, date, startTime, endTime, duration, description) => {
-                    handleUpdate(task, date, startTime, endTime, duration, description, sheetData.values.length);
+                    handleUpdate(task, date, startTime, endTime, duration, description, sheetData?.values?.length);
                 }}
             />
         </Dialog>    

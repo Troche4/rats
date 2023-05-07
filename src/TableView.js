@@ -2,7 +2,7 @@ import { Table, TableContainer, TableHead, TableRow, IconButton, TableCell, Tabl
 import EditIcon from '@material-ui/icons/Edit';
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import AddHoursForm from './AddHoursForm';
+import AddEditHoursForm from './AddEditHoursForm';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,8 +60,8 @@ export default function TableView({sheetData, handleUpdate}){
             open={editFormOpen}
             onClose={() => setEditFormOpen(false)}
         >
-            <AddHoursForm 
-                title={"Edit Row"}
+            <AddEditHoursForm 
+                title={"Edit Hours"}
                 handleClose={() => setEditFormOpen(false)}
                 onSubmit={(task, date, startTime, endTime, duration, description, notes) => {
                     handleUpdate(task, date, startTime, endTime, duration, description, notes, editingIndex + 1);

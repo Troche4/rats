@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-export default function AddHoursForm({title, onSubmit, handleClose, existingRow}){
+export default function AddEditHoursForm({title, onSubmit, handleClose, existingRow}){
     const classesBase = useStyles();
     const [task, setTask] = React.useState(existingRow?.[0] ?? " ");
     const [date, setDate] = React.useState(existingRow?.[1] ?? new Date().toLocaleDateString("en-US"));

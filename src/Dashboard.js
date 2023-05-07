@@ -3,7 +3,7 @@ import { Button, TextField, CircularProgress, Dialog } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import Header from "./Header";
 import TableView from "./TableView";
-import AddHoursForm from "./AddHoursForm";
+import AddEditHoursForm from "./AddEditHoursForm";
 
 const useStyles = makeStyles((theme) => ({
     linkSheetForm: {
@@ -192,7 +192,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             open={addHoursFormOpen}
             onClose={() => setAddHoursFormOpen(false)}
         >
-            <AddHoursForm 
+            <AddEditHoursForm 
                 title="Add Hours"
                 handleClose={() => setAddHoursFormOpen(false)}
                 onSubmit={(task, date, startTime, endTime, duration, description, notes) => {

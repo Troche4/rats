@@ -23,15 +23,14 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-export default function AddHoursForm({title, onSubmit, handleClose}){
+export default function AddHoursForm({title, onSubmit, handleClose, existingRow}){
     const classesBase = useStyles();
-
-    const [task, setTask] = React.useState("");
-    const [date, setDate] = React.useState(new Date().toLocaleDateString("en-US"));
-    const [startTime, setStartTime] = React.useState("");
-    const [endTime, setEndTime] = React.useState("");
-    const [duration, setDuration] = React.useState("");
-    const [description, setDescription] = React.useState("");
+    const [task, setTask] = React.useState(existingRow?.[0] ?? "");
+    const [date, setDate] = React.useState(existingRow?.[1] ?? new Date().toLocaleDateString("en-US"));
+    const [startTime, setStartTime] = React.useState(existingRow?.[2] ?? "");
+    const [endTime, setEndTime] = React.useState(existingRow?.[3] ?? "");
+    const [duration, setDuration] = React.useState(existingRow?.[4] ?? "");
+    const [description, setDescription] = React.useState(existingRow?.[5] ?? "");
 
     return <Paper className={classesBase.formContainer}>
         <Typography className={classesBase.title} variant="h5">{title}</Typography>
@@ -66,10 +65,9 @@ export default function AddHoursForm({title, onSubmit, handleClose}){
         <TextField
             variant="outlined"
             margin="dense"
-            type="number"
             helperText={"Duration (must be in hours)"}
             value={duration}
-            onChange={(evt) => setDuration(Math.round(parseInt(evt.target.value)))}
+            onChange={(evt) => setDuration(evt.target.value)}
         />
         <TextField
             variant="outlined"
@@ -93,7 +91,7 @@ export default function AddHoursForm({title, onSubmit, handleClose}){
                 color="primary"
                 onClick={() => onSubmit(task, date, startTime, endTime, duration, description)}
             >
-                Add
+                Save
             </Button>
         </div>
         

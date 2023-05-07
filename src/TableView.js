@@ -44,7 +44,7 @@ export default function TableView({sheetData, handleUpdate}){
                                 {row?.map(cell => <TableCell key={`body ${index} ${cell}`} align="center">{cell}</TableCell>)}
                                 <TableCell>
                                     <IconButton onClick={() => {
-                                        setEditingIndex(index + 1);
+                                        setEditingIndex(index);
                                         setEditFormOpen(true);
                                     }}>
                                         <EditIcon className={classesBase.editAndDelete} />
@@ -64,9 +64,10 @@ export default function TableView({sheetData, handleUpdate}){
                 title={"Edit Row"}
                 handleClose={() => setEditFormOpen(false)}
                 onSubmit={(task, date, startTime, endTime, duration, description) => {
-                    handleUpdate(task, date, startTime, endTime, duration, description, editingIndex);
+                    handleUpdate(task, date, startTime, endTime, duration, description, editingIndex + 1);
                     setEditFormOpen(false);
                 }}
+                existingRow={rows[editingIndex]}
             />
         </Dialog>
     </React.Fragment>

@@ -41,7 +41,7 @@ export default function TableView({sheetData, handleUpdate}){
                     <TableBody>
                         {rows?.map((row, index) => {
                             return <TableRow key={`row ${index}`}>
-                                {row?.map(cell => <TableCell key={`body ${index} ${cell}`} align="center">{cell}</TableCell>)}
+                                {row?.map((cell, column) => <TableCell key={`body ${index} ${column}`} align="center">{cell}</TableCell>)}
                                 <TableCell>
                                     <IconButton onClick={() => {
                                         setEditingIndex(index);
@@ -63,8 +63,8 @@ export default function TableView({sheetData, handleUpdate}){
             <AddHoursForm 
                 title={"Edit Row"}
                 handleClose={() => setEditFormOpen(false)}
-                onSubmit={(task, date, startTime, endTime, duration, description) => {
-                    handleUpdate(task, date, startTime, endTime, duration, description, editingIndex + 1);
+                onSubmit={(task, date, startTime, endTime, duration, description, notes) => {
+                    handleUpdate(task, date, startTime, endTime, duration, description, notes, editingIndex + 1);
                     setEditFormOpen(false);
                 }}
                 existingRow={rows[editingIndex]}

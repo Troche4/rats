@@ -55,7 +55,7 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
                                 },
                                 body: JSON.stringify({
                                     range: `${name}!1:1`,
-                                    values: [["Task", "Date", "Start Time", "End Time", "Duration (hours)", "Description"]]
+                                    values: [["Task", "Date", "Start Time", "End Time", "Duration (hours)", "Description", "Notes"]]
                                 })
                             })
                             .then(() => {
@@ -78,8 +78,8 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
         fetchSheetData();
     }
 
-    const handleUpdate = (task, date, startTime, endTime, duration, description, index) => {
-            let newRow = [[task, date, startTime, endTime, duration, description]];
+    const handleUpdate = (task, date, startTime, endTime, duration, description, notes, index) => {
+            let newRow = [[task, date, startTime, endTime, duration, description, notes]];
             let id = localStorage.getItem(`${user.email}-sheetId`);
             fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}`, {
                 method: "GET",
@@ -195,8 +195,8 @@ export default function Dashboard({firebaseApp, user, setUser, oauthAccessToken}
             <AddHoursForm 
                 title="Add Hours"
                 handleClose={() => setAddHoursFormOpen(false)}
-                onSubmit={(task, date, startTime, endTime, duration, description) => {
-                    handleUpdate(task, date, startTime, endTime, duration, description, sheetData?.values?.length);
+                onSubmit={(task, date, startTime, endTime, duration, description, notes) => {
+                    handleUpdate(task, date, startTime, endTime, duration, description, notes, sheetData?.values?.length);
                 }}
             />
         </Dialog>    

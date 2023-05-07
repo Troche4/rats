@@ -25,12 +25,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddHoursForm({title, onSubmit, handleClose, existingRow}){
     const classesBase = useStyles();
-    const [task, setTask] = React.useState(existingRow?.[0] ?? "");
+    const [task, setTask] = React.useState(existingRow?.[0] ?? " ");
     const [date, setDate] = React.useState(existingRow?.[1] ?? new Date().toLocaleDateString("en-US"));
-    const [startTime, setStartTime] = React.useState(existingRow?.[2] ?? "");
-    const [endTime, setEndTime] = React.useState(existingRow?.[3] ?? "");
-    const [duration, setDuration] = React.useState(existingRow?.[4] ?? "");
-    const [description, setDescription] = React.useState(existingRow?.[5] ?? "");
+    const [startTime, setStartTime] = React.useState(existingRow?.[2] ?? " ");
+    const [endTime, setEndTime] = React.useState(existingRow?.[3] ?? " ");
+    const [duration, setDuration] = React.useState(existingRow?.[4] ?? " ");
+    const [description, setDescription] = React.useState(existingRow?.[5] ?? " ");
+    const [notes, setNotes] = React.useState(existingRow?.[6] ?? " ")
 
     return <Paper className={classesBase.formContainer}>
         <Typography className={classesBase.title} variant="h5">{title}</Typography>
@@ -77,6 +78,14 @@ export default function AddHoursForm({title, onSubmit, handleClose, existingRow}
             value={description}
             onChange={(evt) => setDescription(evt.target.value)}
         />
+        <TextField
+            variant="outlined"
+            margin="dense"
+            helperText={"Notes (if applicable)"}
+            multiline
+            value={notes}
+            onChange={(evt) => setNotes(evt.target.value)}
+        />
         <div className={classesBase.footer}>
             <Button
                 className={classesBase.submitButton}
@@ -89,7 +98,7 @@ export default function AddHoursForm({title, onSubmit, handleClose, existingRow}
                 className={classesBase.submitButton}
                 variant="contained"
                 color="primary"
-                onClick={() => onSubmit(task, date, startTime, endTime, duration, description)}
+                onClick={() => onSubmit(task, date, startTime, endTime, duration, description, notes)}
             >
                 Save
             </Button>

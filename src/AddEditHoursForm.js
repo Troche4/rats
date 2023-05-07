@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Paper, TextField, Typography } from "@material-ui/core";
+import { Button, Paper, TextField, Typography, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,13 +19,17 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "row",
         justifyContent: "space-evenly",
         marginTop: theme.spacing(1),
+    },
+    select: {
+        minWidth: 205,
+        margin: theme.spacing(1, 0)
     }
   }));
 
 
 export default function AddEditHoursForm({title, onSubmit, handleClose, existingRow}){
     const classesBase = useStyles();
-    const [task, setTask] = React.useState(existingRow?.[0] ?? " ");
+    const [task, setTask] = React.useState(existingRow?.[0] ?? "Organizer Meetings");
     const [date, setDate] = React.useState(existingRow?.[1] ?? new Date().toLocaleDateString("en-US"));
     const [startTime, setStartTime] = React.useState(existingRow?.[2] ?? " ");
     const [endTime, setEndTime] = React.useState(existingRow?.[3] ?? " ");
@@ -35,13 +39,23 @@ export default function AddEditHoursForm({title, onSubmit, handleClose, existing
 
     return <Paper className={classesBase.formContainer}>
         <Typography className={classesBase.title} variant="h5">{title}</Typography>
-        <TextField
-            variant="outlined"
-            margin="dense"
-            helperText={"Task Name"}
-            value={task}
-            onChange={(evt) => setTask(evt.target.value)}
-        />
+        <FormControl variant="outlined" className={classesBase.select}>
+            <InputLabel>Task</InputLabel>
+            <Select
+                value={task}
+                onChange={(evt) => setTask(evt.target.value)}
+                label="Task"
+                margin="dense"
+            >
+                <MenuItem value="Organizer Meetings">Organizer Meetings</MenuItem>
+                <MenuItem value="Chapter Meetings">Chapter Meetings</MenuItem>
+                <MenuItem value="Outreach">Outreach</MenuItem>
+                <MenuItem value="Interviews">Interviews</MenuItem>
+                <MenuItem value="Communications">Communications</MenuItem>
+                <MenuItem value="1 on 1 Meetings">1 on 1 Meetings</MenuItem> 
+                <MenuItem value="Other">Other</MenuItem>
+            </Select>
+        </FormControl>
         <TextField
             variant="outlined"
             margin="dense"
